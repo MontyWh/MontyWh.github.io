@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en-GB" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Montague Whishaw — Audio Software Developer</title>
+  <meta name="description" content="Portfolio of Montague Whishaw, audio software developer based in Bath, UK. C++ and JUCE plugin work, DSP, Unity and FMOD game audio, and immersive spatial sound.">
+  <meta name="author" content="Montague Whishaw">
+
+  <!-- Social sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Montague Whishaw — Audio Software Developer">
+  <meta property="og:description" content="C++ and JUCE plugin work, DSP, Unity and FMOD game audio, and immersive spatial sound.">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Set the theme before first paint so there is no flash of the wrong colours -->
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem("theme");
+        var dark = stored ? stored === "dark"
+          : window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme = dark ? "dark" : "light";
+      } catch (e) { /* storage blocked, fall back to the light default */ }
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;550;650;700&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' font-family='system-ui' font-weight='700' fill='%230a6a63'>M</text></svg>">
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===================================================== HEADER ======= -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" id="brand-name" href="#top">Montague <span>Whishaw</span></a>
+
+      <nav class="nav" id="nav" aria-label="Primary">
+        <ul class="nav__list">
+          <li><a class="nav__link" href="#projects">Projects</a></li>
+          <li><a class="nav__link" href="#skills">Skills</a></li>
+          <li><a class="nav__link" href="#experience">Experience</a></li>
+          <li><a class="nav__link" href="#education">Education</a></li>
+          <li><a class="nav__link" href="#about">About</a></li>
+          <li><a class="nav__link" href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <button class="icon-btn nav-toggle" id="nav-toggle" type="button"
+              aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16"/>
+        </svg>
+      </button>
+
+      <button class="icon-btn" id="theme-toggle" type="button" aria-label="Switch to dark theme">
+        <svg id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>
+        </svg>
+        <svg id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" aria-hidden="true" hidden>
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- =================================================== HERO ========= -->
+    <section class="hero" id="top">
+      <div class="container hero__grid">
+        <div>
+          <p class="hero__role" id="hero-role">Audio Software Developer</p>
+          <h1 id="hero-name">Montague Whishaw</h1>
+          <p class="hero__tagline" id="hero-tagline"></p>
+          <p class="hero__intro" id="hero-intro"></p>
+          <div class="hero__actions" id="hero-actions"></div>
+        </div>
+
+        <div class="hero__portrait" id="hero-portrait"></div>
+      </div>
+
+      <div class="container">
+        <div class="hero__meta" id="hero-meta"></div>
+      </div>
+    </section>
+
+    <!-- =================================================== PROJECTS ===== -->
+    <section class="section section--sunken" id="projects" aria-labelledby="projects-title">
+      <div class="container">
+        <div class="section__head">
+          <span class="section__eyebrow">Portfolio</span>
+          <h2 id="projects-title">Selected projects</h2>
+          <p class="section__lead">
+            Plugin development, game audio implementation and immersive prototypes.
+            Filter by the tools involved.
+          </p>
+        </div>
+
+        <div class="filters" id="project-filters" role="group" aria-label="Filter projects by technology"></div>
+
+        <ul class="projects" id="projects-list"></ul>
+      </div>
+    </section>
+
+    <!-- =================================================== SKILLS ======= -->
+    <section class="section" id="skills" aria-labelledby="skills-title">
+      <div class="container">
+        <div class="section__head">
+          <span class="section__eyebrow">Toolkit</span>
+          <h2 id="skills-title">Skills</h2>
+          <p class="section__lead">
+            Development first, with the studio and immersive experience behind it.
+          </p>
+        </div>
+
+        <ul class="skills" id="skills-list"></ul>
+      </div>
+    </section>
+
+    <!-- =================================================== EXPERIENCE === -->
+    <section class="section section--sunken" id="experience" aria-labelledby="experience-title">
+      <div class="container">
+        <div class="section__head">
+          <span class="section__eyebrow">Track record</span>
+          <h2 id="experience-title">Experience</h2>
+          <p class="section__lead">
+            Audio, development and events work, alongside the hospitality roles that
+            paid for the gear.
+          </p>
+        </div>
+
+        <ol class="timeline" id="experience-list"></ol>
+      </div>
+    </section>
+
+    <!-- =================================================== EDUCATION ==== -->
+    <section class="section" id="education" aria-labelledby="education-title">
+      <div class="container">
+        <div class="section__head">
+          <span class="section__eyebrow">Background</span>
+          <h2 id="education-title">Education</h2>
+        </div>
+
+        <div class="two-col">
+          <ol class="timeline" id="education-list"></ol>
+
+          <div>
+            <div class="card" style="margin-bottom: var(--space-m)">
+              <h3>Certifications</h3>
+              <ul id="certifications-list"></ul>
+            </div>
+            <div class="card">
+              <h3>Interests</h3>
+              <ul id="interests-list"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================== ABOUT ======== -->
+    <section class="section section--sunken" id="about" aria-labelledby="about-title">
+      <div class="container">
+        <div class="section__head">
+          <span class="section__eyebrow">Profile</span>
+          <h2 id="about-title">About</h2>
+        </div>
+
+        <div id="about-body"></div>
+      </div>
+    </section>
+
+    <!-- =================================================== CONTACT ====== -->
+    <section class="section" id="contact" aria-labelledby="contact-title">
+      <div class="container">
+        <div class="section__head">
+          <span class="section__eyebrow">Get in touch</span>
+          <h2 id="contact-title">Contact</h2>
+          <p class="section__lead" id="contact-note"></p>
+        </div>
+
+        <ul class="contact__links" id="contact-links"></ul>
+        <div id="contact-cv"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================================================== FOOTER ======= -->
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <p>&copy; <span id="footer-year"></span> <span id="footer-name"></span></p>
+      <p>Built with plain HTML, CSS and JavaScript.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
