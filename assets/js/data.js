@@ -93,7 +93,7 @@ const siteData = {
     portrait: null,
 
     // Availability note shown in the contact section. Set to null to hide.
-    availability: "Open to junior audio software roles, placements and freelance DSP work. UK based, happy to travel or work remotely."
+    availability: "Open to junior audio software, QA, technical support, and audio technician roles. UK-based (Bath/Bristol), happy to relocate or work 	hybrid/remotely."
   },
 
   /* ------------------------------------------------------------------ */
@@ -295,7 +295,7 @@ const siteData = {
       role: "Volunteer",
       org: "Audio Developer Conference",
       place: "Bristol, UK",
-      period: "November 2024 and November 2025",
+      period: "November 2024, November 2025 & November 2026",
       highlight: true,
       points: [
         "Supported hybrid operations, troubleshooting AV issues and livestream pipeline connectivity across Discord, Zoom and Gather Town.",
