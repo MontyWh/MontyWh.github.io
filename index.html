@@ -4,17 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Montague Whishaw — Audio Software Developer</title>
-  <meta name="description" content="Portfolio of Montague Whishaw, audio software developer based in Bath, UK. C++ and JUCE plugin work, DSP, Unity and FMOD game audio, and immersive spatial sound.">
+  <title>Montague Whishaw — Software Development, IT & Cybersecurity</title>
+  <meta name="description" content="Portfolio of Montague Whishaw, based in Bath, UK. Software development (C++, C#, JavaScript, Ruby), IT systems support, and cybersecurity.">
   <meta name="author" content="Montague Whishaw">
 
   <!-- Social sharing -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Montague Whishaw — Audio Software Developer">
-  <meta property="og:description" content="C++ and JUCE plugin work, DSP, Unity and FMOD game audio, and immersive spatial sound.">
+  <meta property="og:title" content="Montague Whishaw — Software Development, IT & Cybersecurity">
+  <meta property="og:description" content="Software development, IT systems, DSP/audio tooling, and technical support.">
   <meta name="twitter:card" content="summary_large_image">
 
-  <!-- Set the theme before first paint so there is no flash of the wrong colours -->
+  <!-- Set the theme before first paint -->
   <script>
     (function () {
       try {
@@ -22,7 +22,7 @@
         var dark = stored ? stored === "dark"
           : window.matchMedia("(prefers-color-scheme: dark)").matches;
         document.documentElement.dataset.theme = dark ? "dark" : "light";
-      } catch (e) { /* storage blocked, fall back to the light default */ }
+      } catch (e) { /* fallback to light */ }
     })();
   </script>
 
@@ -80,7 +80,7 @@
     <section class="hero" id="top">
       <div class="container hero__grid">
         <div>
-          <p class="hero__role" id="hero-role">Audio Software Developer</p>
+          <p class="hero__role" id="hero-role">Software Development · IT · Cybersecurity</p>
           <h1 id="hero-name">Montague Whishaw</h1>
           <p class="hero__tagline" id="hero-tagline"></p>
           <p class="hero__intro" id="hero-intro"></p>
@@ -100,16 +100,27 @@
       <div class="container">
         <div class="section__head">
           <span class="section__eyebrow">Portfolio</span>
-          <h2 id="projects-title">Selected projects</h2>
+          <h2 id="projects-title">Software & Technical Projects</h2>
           <p class="section__lead">
-            Plugin development, game audio implementation and immersive prototypes.
-            Filter by the tools involved.
+            Application development in C++, C#, and JavaScript, real-time systems, and interactive software.
           </p>
         </div>
 
         <div class="filters" id="project-filters" role="group" aria-label="Filter projects by technology"></div>
 
         <ul class="projects" id="projects-list"></ul>
+
+        <!-- Background / Creative & Hardware Projects -->
+        <div class="sub-section" id="background-projects-wrap">
+          <div class="section__head">
+            <span class="section__eyebrow">Background Projects</span>
+            <h3 id="bg-projects-title">Audio Production, Hardware & Creative Media</h3>
+            <p class="section__lead">
+              Earlier coursework and creative technical projects across embedded microcontrollers, virtual instruments, and surround post-production.
+            </p>
+          </div>
+          <ul class="projects" id="background-projects-list"></ul>
+        </div>
       </div>
     </section>
 
@@ -120,7 +131,7 @@
           <span class="section__eyebrow">Toolkit</span>
           <h2 id="skills-title">Skills</h2>
           <p class="section__lead">
-            Development first, with the studio and immersive experience behind it.
+            Software engineering, IT systems, and technical operations first, backed by creative media and hardware experience.
           </p>
         </div>
 
@@ -133,14 +144,24 @@
       <div class="container">
         <div class="section__head">
           <span class="section__eyebrow">Track record</span>
-          <h2 id="experience-title">Experience</h2>
+          <h2 id="experience-title">Technical & IT Experience</h2>
           <p class="section__lead">
-            Audio, development and events work, alongside the hospitality roles that
-            paid for the gear.
+            Software, digital transformation, IT/AV event operations, and technical troubleshooting.
           </p>
         </div>
 
         <ol class="timeline" id="experience-list"></ol>
+
+        <div class="sub-section" id="background-experience-wrap">
+          <div class="section__head">
+            <span class="section__eyebrow">Additional Background</span>
+            <h3>Hospitality, Leadership & Volunteering</h3>
+            <p class="section__lead">
+              Customer-facing hospitality roles, community leadership, and expedition work that built resilience and communication under pressure.
+            </p>
+          </div>
+          <ol class="timeline" id="background-experience-list"></ol>
+        </div>
       </div>
     </section>
 
@@ -161,7 +182,7 @@
               <ul id="certifications-list"></ul>
             </div>
             <div class="card">
-              <h3>Interests</h3>
+              <h3>Additional Interests & Media</h3>
               <ul id="interests-list"></ul>
             </div>
           </div>
@@ -174,7 +195,7 @@
       <div class="container">
         <div class="section__head">
           <span class="section__eyebrow">Profile</span>
-          <h2 id="about-title">About</h2>
+          <h2 id="about-title">About & Full Background</h2>
         </div>
 
         <div id="about-body"></div>

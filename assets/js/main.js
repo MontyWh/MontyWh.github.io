@@ -1,29 +1,13 @@
 /* ============================================================================
    main.js — renders the page from siteData and wires up the interactions.
-
    Nothing here holds content. To change what the site says, edit data.js.
-
-   Contents
-     1. Helpers
-     2. Renderers (one per section)
-     3. Interactions (theme, mobile nav, filters, scroll spy)
-     4. Init
    ========================================================================== */
 
 (function () {
   "use strict";
 
-  /* 1. HELPERS ============================================================= */
-
-  /** Shorthand for document.querySelector. */
   const $ = (selector, scope = document) => scope.querySelector(selector);
 
-  /**
-   * Create an element.
-   * @param {string} tag
-   * @param {object} props - className, textContent, href, and data-* / aria-* attrs
-   * @param {Array<Node|string>} children
-   */
   function el(tag, props = {}, children = []) {
     const node = document.createElement(tag);
     for (const [key, value] of Object.entries(props)) {
@@ -40,14 +24,12 @@
     return node;
   }
 
-  /** Build a <ul class="tag-list"> of pill tags. */
   function tagList(items) {
     return el("ul", { class: "tag-list" },
       items.map((item) => el("li", { class: "tag", text: item }))
     );
   }
 
-  /** Build a plain <ul> of bullet points. */
   function bulletList(points, className) {
     if (!points || !points.length) return null;
     return el("ul", { class: className },
@@ -55,11 +37,9 @@
     );
   }
 
-  /** Initials from a full name, used for the monogram placeholder. */
   function initials(name) {
     return name.split(/\s+/).map((word) => word[0]).join("").toUpperCase();
   }
-
 
   /* 2. RENDERERS =========================================================== */
 
@@ -72,7 +52,6 @@
     $("#hero-tagline").textContent = profile.tagline;
     $("#hero-intro").textContent = profile.intro;
 
-    // Portrait or monogram fallback
     const portrait = $("#hero-portrait");
     if (profile.portrait) {
       portrait.replaceChildren(
@@ -84,33 +63,23 @@
       );
     }
 
-    // Hero buttons: the audio CV leads, then contact, then the full CV.
     const actions = $("#hero-actions");
     const primary = profile.links.find((link) => link.primary) || profile.links[0];
     actions.replaceChildren(
       el("a", {
         class: "btn btn--primary",
-        href: profile.cv.primary.href,
-        text: profile.cv.primary.label,
-        title: profile.cv.primary.note,
+        href: profile.cv.href,
+        text: profile.cv.label,
+        title: profile.cv.note,
         type: "application/pdf",
-        download: profile.cv.primary.filename || ""
+        download: profile.cv.filename ? profile.cv.filename : null
       }),
-      el("a", { class: "btn btn--ghost", href: primary.href, text: "Get in touch" }),
-      el("a", {
-        class: "btn btn--quiet",
-        href: profile.cv.secondary.href,
-        text: profile.cv.secondary.label,
-        title: profile.cv.secondary.note,
-        type: "application/pdf",
-        download: profile.cv.secondary.filename || ""
-      })
+      el("a", { class: "btn btn--ghost", href: primary.href, text: "Get in touch" })
     );
 
-    // Small meta strip under the hero
     $("#hero-meta").replaceChildren(
       el("span", { html: "<strong>Based in</strong> " + profile.location }),
-      el("span", { html: "<strong>Focus</strong> C++, JUCE, DSP, game and immersive audio" }),
+      el("span", { html: "<strong>Focus</strong> Software Development, IT & Cybersecurity" }),
       el("span", { html: "<strong>Status</strong> Open to junior roles" })
     );
   }
@@ -118,83 +87,81 @@
   function renderAbout(profile) {
     $("#about-body").replaceChildren(
       ...profile.about.map((paragraph) => el("p", { text: paragraph })),
-      cvChooser(profile.cv)
+      singleCvCard(profile.cv)
     );
   }
 
-  /** Side-by-side cards offering both CV versions. Used in About and Contact. */
-  function cvChooser(cv) {
-    return el("div", { class: "cv-choice" },
-      [cv.primary, cv.secondary].map((item, index) =>
-        el("a", {
-          class: "cv-card",
-          href: item.href,
-          type: "application/pdf",
-          download: item.filename || ""
-        }, [
-          el("span", { class: "cv-card__label", text: index === 0 ? "Recommended" : "Everything" }),
-          el("span", { class: "cv-card__title", text: item.label }),
-          el("span", { class: "cv-card__note", text: item.note })
-        ])
-      )
-    );
+  function singleCvCard(cv) {
+    return el("div", { class: "cv-choice" }, [
+      el("a", {
+        class: "cv-card",
+        href: cv.href,
+        type: "application/pdf",
+        download: cv.filename || ""
+      }, [
+        el("span", { class: "cv-card__label", text: "Curriculum Vitae" }),
+        el("span", { class: "cv-card__title", text: cv.label }),
+        el("span", { class: "cv-card__note", text: cv.note })
+      ])
+    ]);
   }
 
-  function renderProjects(projects, filterTags) {
-    const list = $("#projects-list");
-
-    const cards = projects.map((project) => {
-      const card = el("li", {
-        class: "project" + (project.featured ? " project--featured" : ""),
-        "data-tags": project.tags.join("|")
-      });
-
-      const main = el("div", {}, [
-        el("div", { class: "project__head" }, [
-          el("h3", { class: "project__title", text: project.title }),
-          el("span", { class: "project__year", text: project.year })
-        ]),
-        el("p", { class: "project__role", text: project.role }),
-        el("p", { class: "project__blurb", text: project.blurb })
-      ]);
-
-      const aside = el("div", {}, [
-        bulletList(project.detail, "project__detail"),
-        el("div", { class: "project__foot" }, [
-          tagList(project.tags),
-          project.links && project.links.length
-            ? el("div", { class: "project__links" },
-                project.links.map((link) =>
-                  el("a", {
-                    href: link.href,
-                    text: link.label,
-                    rel: "noopener",
-                    target: "_blank"
-                  })
-                )
-              )
-            : el("p", { class: "project__note", text: "Links and media to follow." })
-        ])
-      ]);
-
-      card.append(main, aside);
-      return card;
+  function buildProjectCard(project, isFilterable) {
+    const card = el("li", {
+      class: "project" + (project.featured ? " project--featured" : "") + (isFilterable ? " project--filterable" : ""),
+      "data-tags": project.tags.join("|")
     });
 
-    list.replaceChildren(...cards);
+    const main = el("div", {}, [
+      el("div", { class: "project__head" }, [
+        el("h3", { class: "project__title", text: project.title }),
+        el("span", { class: "project__year", text: project.year })
+      ]),
+      el("p", { class: "project__role", text: project.role }),
+      el("p", { class: "project__blurb", text: project.blurb })
+    ]);
+
+    const aside = el("div", {}, [
+      bulletList(project.detail, "project__detail"),
+      el("div", { class: "project__foot" }, [
+        tagList(project.tags),
+        project.links && project.links.length
+          ? el("div", { class: "project__links" },
+              project.links.map((link) =>
+                el("a", {
+                  href: link.href,
+                  text: link.label,
+                  rel: "noopener",
+                  target: "_blank"
+                })
+              )
+            )
+          : null
+      ])
+    ]);
+
+    card.append(main, aside);
+    return card;
+  }
+
+  function renderProjects(projects, bgProjects, filterTags) {
+    const list = $("#projects-list");
+    list.replaceChildren(...projects.map((p) => buildProjectCard(p, true)));
     renderFilters(projects, filterTags);
+
+    const bgList = $("#background-projects-list");
+    if (bgList && bgProjects && bgProjects.length) {
+      bgList.replaceChildren(...bgProjects.map((p) => buildProjectCard(p, false)));
+    }
   }
 
   function renderFilters(projects, chosen) {
-    // Use the curated list from data.js when present, otherwise fall back to
-    // every tag in use, alphabetised.
     const inUse = new Set(projects.flatMap((project) => project.tags));
     const tags = chosen
       ? chosen.filter((tag) => inUse.has(tag))
       : [...inUse].sort();
 
     const bar = $("#project-filters");
-
     const buttons = ["All", ...tags].map((tag, index) =>
       el("button", {
         class: "filter",
@@ -220,20 +187,26 @@
     );
   }
 
-  function renderExperience(experience) {
-    $("#experience-list").replaceChildren(
-      ...experience.map((job) =>
-        el("li", { class: "entry" + (job.highlight ? " entry--highlight" : "") }, [
-          el("p", { class: "entry__period", text: job.period }),
-          el("h3", { class: "entry__role", text: job.role }),
-          el("p", {
-            class: "entry__org",
-            html: "<strong>" + job.org + "</strong>, " + job.place
-          }),
-          bulletList(job.points, "entry__points")
-        ])
-      )
+  function buildTimelineItems(items) {
+    return items.map((job) =>
+      el("li", { class: "entry" + (job.highlight ? " entry--highlight" : "") }, [
+        el("p", { class: "entry__period", text: job.period }),
+        el("h3", { class: "entry__role", text: job.role }),
+        el("p", {
+          class: "entry__org",
+          html: "<strong>" + job.org + "</strong>, " + job.place
+        }),
+        bulletList(job.points, "entry__points")
+      ])
     );
+  }
+
+  function renderExperience(experience, bgExperience) {
+    $("#experience-list").replaceChildren(...buildTimelineItems(experience));
+    const bgEl = $("#background-experience-list");
+    if (bgEl && bgExperience && bgExperience.length) {
+      bgEl.replaceChildren(...buildTimelineItems(bgExperience));
+    }
   }
 
   function renderEducation(education, certifications, interests) {
@@ -274,16 +247,14 @@
       ).map((anchor) => el("li", {}, [anchor]))
     );
 
-    $("#contact-cv").replaceChildren(cvChooser(profile.cv));
+    $("#contact-cv").replaceChildren(singleCvCard(profile.cv));
 
     $("#footer-name").textContent = profile.name;
     $("#footer-year").textContent = new Date().getFullYear();
   }
 
-
   /* 3. INTERACTIONS ======================================================== */
 
-  /** Theme toggle. Respects the OS setting until the visitor overrides it. */
   function initTheme() {
     const toggle = $("#theme-toggle");
     const stored = (function () {
@@ -296,15 +267,13 @@
     toggle.addEventListener("click", function () {
       const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
       apply(next);
-      try { localStorage.setItem("theme", next); } catch (_) { /* private mode */ }
+      try { localStorage.setItem("theme", next); } catch (_) {}
     });
 
     function apply(theme) {
       document.documentElement.dataset.theme = theme;
       toggle.setAttribute("aria-label",
         theme === "dark" ? "Switch to light theme" : "Switch to dark theme");
-      // SVG elements do not expose the `hidden` IDL property, so set the
-      // attribute directly rather than assigning to .hidden.
       setHidden($("#icon-sun"), theme !== "dark");
       setHidden($("#icon-moon"), theme === "dark");
     }
@@ -315,7 +284,6 @@
     }
   }
 
-  /** Mobile navigation drawer. */
   function initNav() {
     const toggle = $("#nav-toggle");
     const nav = $("#nav");
@@ -334,7 +302,6 @@
     });
   }
 
-  /** Tag filtering on the projects grid. */
   function initFilters() {
     const bar = $("#project-filters");
 
@@ -348,14 +315,13 @@
         other.setAttribute("aria-pressed", String(other === button));
       });
 
-      document.querySelectorAll(".project").forEach(function (card) {
+      document.querySelectorAll(".project--filterable").forEach(function (card) {
         const tags = card.dataset.tags.split("|");
         card.hidden = filter !== "All" && !tags.includes(filter);
       });
     });
   }
 
-  /** Highlights the nav item for the section currently in view. */
   function initScrollSpy() {
     const links = [...document.querySelectorAll(".nav__link")];
     const sections = links
@@ -377,7 +343,6 @@
     sections.forEach(function (section) { observer.observe(section); });
   }
 
-
   /* 4. INIT ================================================================ */
 
   function init() {
@@ -390,9 +355,9 @@
 
     renderHero(siteData.profile);
     renderAbout(siteData.profile);
-    renderProjects(siteData.projects, siteData.filterTags);
+    renderProjects(siteData.projects, siteData.backgroundProjects, siteData.filterTags);
     renderSkills(siteData.skills);
-    renderExperience(siteData.experience);
+    renderExperience(siteData.experience, siteData.backgroundExperience);
     renderEducation(siteData.education, siteData.certifications, siteData.interests);
     renderContact(siteData.profile);
 
